@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WorkforceIQ — Intelligent Scheduling & Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">W<span>IQ</span></div>
+    <span class="logo-text">WorkforceIQ</span>
+  </div>
+  <nav class="sidebar-nav">
+    <a class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" data-page="employees" onclick="navigate('employees')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Employees
+    </a>
+    <a class="nav-item" data-page="schedule" onclick="navigate('schedule')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Scheduling
+    </a>
+    <a class="nav-item" data-page="attendance" onclick="navigate('attendance')">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Attendance
+    </a>
+    <a class="nav-item" data-page="analytics" onclick="navigate('analytics')">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Analytics
+    </a>
+    <a class="nav-item" data-page="reports" onclick="navigate('reports')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Reports
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="user-pill">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">Admin</div>
+        <div class="user-role">System Manager</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="page-title" id="pageTitle">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search employees, shifts…" id="globalSearch"/>
+      </div>
+      <div class="notif-btn">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </div>
+      <div class="date-chip" id="liveClock">--:--</div>
+    </div>
+  </header>
+
+  <!-- PAGES -->
+  <div class="page-container">
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h1>Operations Overview</h1>
+        <p>Real-time workforce intelligence</p>
+      </div>
+
+      <div class="kpi-grid" id="kpiGrid">
+        <div class="kpi-card" style="--accent:#3ecf8e">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="kpi-label">Total Employees</div>
+          <div class="kpi-value" id="kpiTotal">—</div>
+          <div class="kpi-sub">Active workforce</div>
+        </div>
+        <div class="kpi-card" style="--accent:#6c8ff8">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="kpi-label">Present Today</div>
+          <div class="kpi-value" id="kpiPresent">—</div>
+          <div class="kpi-sub" id="kpiAttRate">Attendance rate</div>
+        </div>
+        <div class="kpi-card" style="--accent:#f5a623">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="kpi-label">Shifts This Week</div>
+          <div class="kpi-value" id="kpiShifts">—</div>
+          <div class="kpi-sub">Scheduled</div>
+        </div>
+        <div class="kpi-card" style="--accent:#e05252">
+          <div class="kpi-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="kpi-label">Avg Hours/Day</div>
+          <div class="kpi-value" id="kpiHours">—</div>
+          <div class="kpi-sub">Per employee</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card chart-card">
+          <div class="card-header">
+            <span>Attendance Trend</span>
+            <div class="legend">
+              <span class="dot" style="background:#3ecf8e"></span>Present
+              <span class="dot" style="background:#e05252;margin-left:12px"></span>Absent
+            </div>
+          </div>
+          <canvas id="attendanceChart" height="200"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Department Coverage</span></div>
+          <canvas id="deptChart" height="200"></canvas>
+        </div>
+        <div class="card performers-card">
+          <div class="card-header"><span>Top Performers</span><span class="badge-green">This Month</span></div>
+          <div id="performersList"></div>
+        </div>
+        <div class="card activity-card">
+          <div class="card-header"><span>Recent Activity</span></div>
+          <div id="activityFeed" class="activity-feed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMPLOYEES -->
+    <section class="page" id="page-employees">
+      <div class="page-header">
+        <h1>Employee Management</h1>
+        <p>Manage your workforce</p>
+      </div>
+      <div class="toolbar">
+        <input type="text" placeholder="Search by name, role, department…" class="table-search" oninput="filterEmployees(this.value)"/>
+        <select id="deptFilter" onchange="filterEmployees(document.querySelector('.table-search').value)" class="filter-select">
+          <option value="">All Departments</option>
+          <option>Engineering</option><option>Marketing</option>
+          <option>Operations</option><option>HR</option>
+          <option>Sales</option><option>Finance</option>
+        </select>
+        <button class="btn-primary" onclick="openEmployeeModal()">+ Add Employee</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="employeeTable">
+          <thead><tr>
+            <th>Employee</th><th>Role</th><th>Department</th>
+            <th>Status</th><th>Rate/hr</th><th>Hire Date</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="employeeTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SCHEDULING -->
+    <section class="page" id="page-schedule">
+      <div class="page-header">
+        <h1>Shift Scheduling</h1>
+        <p>Intelligent shift management</p>
+      </div>
+      <div class="toolbar">
+        <input type="week" id="weekPicker" class="filter-select" onchange="loadSchedule()"/>
+        <button class="btn-secondary" onclick="autoGenerate()">⚡ Auto-Generate</button>
+        <button class="btn-primary" onclick="openShiftModal()">+ Add Shift</button>
+      </div>
+      <div class="schedule-legend">
+        <span class="shift-badge morning">Morning 06-14</span>
+        <span class="shift-badge afternoon">Afternoon 14-22</span>
+        <span class="shift-badge night">Night 22-06</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="scheduleTable">
+          <thead><tr>
+            <th>Employee</th><th>Department</th>
+            <th>Date</th><th>Shift</th><th>Start</th><th>End</th><th>Status</th>
+          </tr></thead>
+          <tbody id="scheduleTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ATTENDANCE -->
+    <section class="page" id="page-attendance">
+      <div class="page-header">
+        <h1>Attendance Tracking</h1>
+        <p>Monitor check-ins and hours</p>
+      </div>
+      <div class="toolbar">
+        <input type="month" id="monthPicker" class="filter-select" onchange="loadAttendance()"/>
+        <button class="btn-primary" onclick="checkIn()">✓ Check In</button>
+        <button class="btn-secondary" onclick="checkOut()">✗ Check Out</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr>
+            <th>Employee</th><th>Department</th><th>Date</th>
+            <th>Check In</th><th>Check Out</th><th>Hours</th><th>Status</th>
+          </tr></thead>
+          <tbody id="attendanceTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ANALYTICS -->
+    <section class="page" id="page-analytics">
+      <div class="page-header">
+        <h1>Productivity Analytics</h1>
+        <p>Deep workforce intelligence</p>
+      </div>
+      <div class="analytics-grid">
+        <div class="card full-width">
+          <div class="card-header"><span>Monthly Productivity Report</span></div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr>
+                <th>Employee</th><th>Department</th><th>Days Worked</th>
+                <th>Total Hours</th><th>Avg Daily</th><th>Pay (est.)</th>
+              </tr></thead>
+              <tbody id="productivityTbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Dept Leaderboard</span></div>
+          <canvas id="leaderboardChart" height="240"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-header"><span>Hours Distribution</span></div>
+          <canvas id="hoursChart" height="240"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="page" id="page-reports">
+      <div class="page-header">
+        <h1>Reports & Exports</h1>
+        <p>Weekly summaries and insights</p>
+      </div>
+      <div class="reports-grid">
+        <div class="card report-card" onclick="generateReport('weekly')">
+          <div class="report-icon">📊</div>
+          <div class="report-title">Weekly Summary</div>
+          <div class="report-desc">Schedules vs actual attendance for the week</div>
+        </div>
+        <div class="card report-card" onclick="generateReport('productivity')">
+          <div class="report-icon">📈</div>
+          <div class="report-title">Productivity Report</div>
+          <div class="report-desc">Employee performance and hours analysis</div>
+        </div>
+        <div class="card report-card" onclick="generateReport('labor_cost')">
+          <div class="report-icon">💰</div>
+          <div class="report-title">Labor Cost Analysis</div>
+          <div class="report-desc">Projected and actual labor expenditure</div>
+        </div>
+        <div class="card report-card" onclick="generateReport('attendance')">
+          <div class="report-icon">📋</div>
+          <div class="report-title">Attendance Summary</div>
+          <div class="report-desc">Monthly attendance rates by department</div>
+        </div>
+      </div>
+      <div id="reportOutput" class="report-output" style="display:none"></div>
+    </section>
+
+  </div><!-- /page-container -->
+</main>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2 id="modalTitle">Add Employee</h2>
+      <button onclick="closeModal()" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
